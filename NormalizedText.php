@@ -13,7 +13,7 @@ namespace ContentSyndication {
             $this->name = trim($name);
         }
 
-        public function __invoke(): string
+        public function get(): string
         {
             return $this->name;
         }
