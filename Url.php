@@ -160,7 +160,7 @@ namespace ContentSyndication {
 
         // ---------------------------------------------------------------------------
 
-        function absolutized($base)
+        function absolutized($base): Url
         {
             // -------------------------------
             // return if already absolute URL
@@ -168,7 +168,7 @@ namespace ContentSyndication {
 
             $scheme = parse_url($this->url, PHP_URL_SCHEME);
             if (!empty($scheme)) {
-                return $this->url;
+                return $this;
             }
 
             // ------------------------------------------------
@@ -187,7 +187,8 @@ namespace ContentSyndication {
 
             if (strpos($this->url, "//") === 0) {
                 // assume https:
-                return $scheme . ":" . $this->url;
+                $this->url =  $scheme . ":" . $this->url;
+                return $this;
             }
 
             // ---------------------
@@ -195,7 +196,8 @@ namespace ContentSyndication {
             // ---------------------
 
             if (strpos($this->url, '#') === 0 || strpos($this->url, '?') === 0) {
-                return $base . $this->url;
+                $this->url = $base . $this->url;
+                return $this;
             }
 
             // ------------------------------------------
