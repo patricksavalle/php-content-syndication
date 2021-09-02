@@ -1,0 +1,34 @@
+{
+  "name": "patricksavalle/content-syndication",
+  "description": "Helper library for dealing with HTML metadata retrieval, RSS, ATOM, URL parsing and normalization",
+  "version": "v0.1",
+  "type": "library",
+  "keywords": [
+    "RSS",
+    "atom",
+    "syndication",
+    "html metadata",
+    "url parsing"
+  ],
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Patrick Savalle",
+      "email": "patrick@patricksavalle.com",
+      "homepage": "https://github.com/patricksavalle/php-content-syndication",
+      "role": "Developer"
+    }
+  ],
+  "require": {
+    "ext-json": "*",
+    "ext-libxml": "*",
+    "ext-dom": "*",
+    "ext-simplexml": "*",
+    "ext-curl": "*"
+  },
+  "autoload": {
+    "psr-4": {
+      "ContentSyndication\\": "."
+    }
+  }
+}
