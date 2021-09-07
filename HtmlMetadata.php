@@ -22,10 +22,10 @@ namespace ContentSyndication {
             libxml_use_internal_errors(true);
             $doc = new DomDocument;
             $doc->loadHTML((new HttpRequest)($url));
-            $xpath = new DOMXPath($doc);
+            $xpathdom = new DOMXPath($doc);
 
-            $xfunc = function (string $x) use ($xpath) {
-                return @$xpath->query($x)->item(0)->nodeValue;
+            $xfunc = function (string $xpath) use ($xpathdom) {
+                return @$xpathdom->query($xpath)->item(0)->nodeValue;
             };
 
             $metadata['url']
@@ -75,10 +75,7 @@ namespace ContentSyndication {
             if (isset($metadata['rss'])) $metadata['rss'] = (new Url($metadata['rss']))->absolutized($metadata['url'])->get();
             if (isset($metadata['atom'])) $metadata['atom'] = (new Url($metadata['atom']))->absolutized($metadata['url'])->get();
 
-            // TODO remove HTML entities and other garbage from descriptions etc.
-            $metadata['description'] = preg_replace('/[[:^print:]]/', '', $metadata['description']);
-
-            // normalize keywords and return as array
+            // return keywords as unique array, minimum clean up
             $keywords = [];
             foreach (explode(",", $metadata['keywords'] ?? "") as $keyword) {
                 $keyword = trim($keyword);
