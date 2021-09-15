@@ -8,6 +8,12 @@ namespace ContentSyndication {
     {
         private $url;
 
+        static private $campaign_parameters = [
+            "dgcid",
+            "utm_",
+            "__twitter_impression",
+        ];
+
         public function __construct(string $url)
         {
             $this->url = $url;
@@ -138,10 +144,11 @@ namespace ContentSyndication {
             if (isset($url['query'])) {
                 if (preg_match("/&/", $url['query'])) {
                     $s = explode("&", $url['query']);
-                    // remove the campaign arguments ?utm_campaign=RSS&utm_medium=rss&utm_source=rss
+                    // remove the campaign arguments
                     foreach ($s as $i => $z) {
-                        if (stripos($z, "utm_") === 0) unset($s[$i]);
-                        elseif (stripos($z, "__twitter_impression") === 0) unset($s[$i]);
+                        foreach (static::$campaign_parameters as $key) {
+                            if (stripos($z, $key) === 0) unset($s[$i]);
+                        }
                     }
                     if (!empty($s)) {
                         $url['query'] = "";
@@ -187,7 +194,7 @@ namespace ContentSyndication {
 
             if (strpos($this->url, "//") === 0) {
                 // assume https:
-                $this->url =  $scheme . ":" . $this->url;
+                $this->url = $scheme . ":" . $this->url;
                 return $this;
             }
 
