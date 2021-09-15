@@ -9,8 +9,20 @@ namespace ContentSyndication {
         private $url;
 
         static private $campaign_parameters = [
+            "_openstat",
+            "fbclid",
+            "gclid",
+            "yclid",
             "dgcid",
             "utm_",
+            "fb_source",
+            "fb_ref",
+            "fb_action_ids",
+            "fb_comment_id",
+            "fb_action_types",
+            "action_object_map",
+            "action_type_map",
+            "action_ref_map",
             "__twitter_impression",
         ];
 
