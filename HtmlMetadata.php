@@ -65,8 +65,8 @@ namespace ContentSyndication {
 
             // keywords, author, copyright
             $metadata['keywords'] = array_merge(
-                $xvalue('/*/head/meta[@name="keywords"]/@content'),
-                $xvalue('/*/head/meta[@name="news_keywords"]/@content'));
+                $xvalue('/*/head/meta[@name="keywords"]/@content') ?? [],
+                $xvalue('/*/head/meta[@name="news_keywords"]/@content') ?? []);
             $metadata['author'] = $xvalue('/*/head/meta[@name="author"]/@content');
             $metadata['copyright'] = $xvalue('/*/head/meta[@name="copyright"]/@content');
 
