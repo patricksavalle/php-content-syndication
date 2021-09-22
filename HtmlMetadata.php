@@ -64,8 +64,9 @@ namespace ContentSyndication {
             $metadata['atom'] = $xvalue('/*/head/link[@rel="alternate"][@type="application/atom+xml"]/@href');
 
             // keywords, author, copyright
-            $metadata['keywords'] = $xvalue('/*/head/meta[@name="keywords"]/@content');
-            array_merge($metadata[], $xvalue('/*/head/meta[@name="news_keywords"]/@content'));
+            $metadata['keywords'] = array_merge(
+                $xvalue('/*/head/meta[@name="keywords"]/@content'),
+                $xvalue('/*/head/meta[@name="news_keywords"]/@content'));
             $metadata['author'] = $xvalue('/*/head/meta[@name="author"]/@content');
             $metadata['copyright'] = $xvalue('/*/head/meta[@name="copyright"]/@content');
 
