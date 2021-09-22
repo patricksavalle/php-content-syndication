@@ -80,7 +80,7 @@ namespace ContentSyndication {
             foreach (explode(",", $metadata_keywords) as $keyword) {
                 $keyword = trim($keyword);
                 if (!empty($keyword) and !in_array($keyword, $metadata['keywords'])) {
-                    $metadata['keywords'] = $keyword;
+                    $metadata['keywords'][] = $keyword;
                 }
             }
 
