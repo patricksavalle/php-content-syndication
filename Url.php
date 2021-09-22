@@ -28,6 +28,7 @@ namespace ContentSyndication {
 
         public function __construct(string $url)
         {
+            assert(filter_var($url, FILTER_VALIDATE_URL) !== false);
             $this->url = $url;
         }
 
