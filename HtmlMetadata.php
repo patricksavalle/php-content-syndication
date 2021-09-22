@@ -64,9 +64,9 @@ namespace ContentSyndication {
             $metadata['atom'] = $xvalue('/*/head/link[@rel="alternate"][@type="application/atom+xml"]/@href');
 
             // keywords, author, copyright
-            $metadata['keywords'] = array_merge(
-                $xvalue('/*/head/meta[@name="keywords"]/@content') ?? [],
-                $xvalue('/*/head/meta[@name="news_keywords"]/@content') ?? []);
+            $metadata_keywords =
+                $xvalue('/*/head/meta[@name="keywords"]/@content') . "," .
+                $xvalue('/*/head/meta[@name="news_keywords"]/@content');
             $metadata['author'] = $xvalue('/*/head/meta[@name="author"]/@content');
             $metadata['copyright'] = $xvalue('/*/head/meta[@name="copyright"]/@content');
 
@@ -77,7 +77,7 @@ namespace ContentSyndication {
 
             // return keywords as unique array, minimum clean up
             $metadata['keywords'] = [];
-            foreach (explode(",", $metadata['keywords'] ?? "") as $keyword) {
+            foreach (explode(",", $metadata_keywords) as $keyword) {
                 $keyword = trim($keyword);
                 if (!empty($keyword) and !in_array($keyword, $metadata['keywords'])) {
                     $metadata['keywords'] = $keyword;
