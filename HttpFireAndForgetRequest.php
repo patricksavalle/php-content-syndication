@@ -1,8 +1,8 @@
 <?php
 
-namespace ContentSyndication {
+declare(strict_types=1);
 
-    use \Exception;
+namespace ContentSyndication {
 
     /**
      * Usage: $content = (new HttpRequest)($url);
