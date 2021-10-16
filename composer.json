@@ -25,7 +25,8 @@
     "ext-libxml": "*",
     "ext-dom": "*",
     "ext-simplexml": "*",
-    "ext-curl": "*"
+    "ext-curl": "*",
+    "erusev/parsedown": "^1.7"
   },
   "autoload": {
     "psr-4": {

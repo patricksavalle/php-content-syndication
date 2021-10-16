@@ -4,23 +4,43 @@ declare(strict_types=1);
 
 namespace ContentSyndication {
 
-    class NormalizedText
-    {
-        protected $name;
+    use Parsedown;
 
-        public function __construct(string $name)
+    class Text
+    {
+        protected $text;
+
+        public function __construct(string $text)
         {
-            $this->name = trim($name);
+            $this->text = trim($text);
         }
 
         public function get(): string
         {
-            return $this->name;
+            return $this->text;
         }
 
-        public function hyphenizeForPath() : NormalizedText
+        public function Blurbified(int $blurbsize = 250): Text
         {
-            $this->name = preg_replace('/[[:^alnum:]]/', "-", strtolower($this->name));
+            $this->text = substr(strip_tags($this->text), 0, $blurbsize);
+            return $this;
+        }
+
+        public function parseDown(): Text
+        {
+            (new Parsedown())->setSafeMode(true)->setBreaksEnabled(true)->text($this->text);
+            return $this;
+        }
+
+        public function parseDownLine(): Text
+        {
+            (new Parsedown())->setSafeMode(true)->setBreaksEnabled(true)->line($this->text);
+            return $this;
+        }
+
+        public function hyphenizeForPath() : Text
+        {
+            $this->text = preg_replace('/[[:^alnum:]]/', "-", strtolower($this->text));
             return $this;
         }
 
@@ -28,9 +48,9 @@ namespace ContentSyndication {
         // Taken from https://stackoverflow.com/questions/8781911/remove-non-ascii-characters-from-string/24925209#24925209
         // ----------------------------------------------------------------------------------------------------------------
 
-        public function convertToAscii(): NormalizedText
+        public function convertToAscii(): Text
         {
-            $text = $this->name;
+            $text = $this->text;
 
             // Single letters
             $text = preg_replace("/[∂άαáàâãªä]/u", "a", $text);
@@ -172,7 +192,7 @@ namespace ContentSyndication {
             // remove non ascii characters
             // $text =  preg_replace('/[\x00-\x1F\x80-\xFF]/', '', $text);
 
-            $this->name = $text;
+            $this->text = $text;
 
             return $this;
         }
