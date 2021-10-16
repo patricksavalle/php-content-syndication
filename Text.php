@@ -20,7 +20,7 @@ namespace ContentSyndication {
             return $this->text;
         }
 
-        public function Blurbified(int $blurbsize = 250): Text
+        public function blurbify(int $blurbsize = 250): Text
         {
             $this->text = substr(strip_tags($this->text), 0, $blurbsize);
             return $this;
