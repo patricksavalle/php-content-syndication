@@ -34,9 +34,6 @@ namespace ContentSyndication {
             }
             // return redirected url
             $url = curl_getinfo($curl, CURLINFO_EFFECTIVE_URL);
-            // encoding corrections
-            $result = mb_convert_encoding($result, 'utf-8', mb_detect_encoding($result));
-            $result = mb_convert_encoding($result, 'html-entities', 'utf-8');
             return $result;
         }
     }

@@ -21,7 +21,11 @@ namespace ContentSyndication {
             $metadata = [];
             libxml_use_internal_errors(true);
             $doc = new DomDocument;
-            $doc->loadHTML((new HttpRequest)($url));
+            $file = (new HttpRequest)($url);
+            // encoding corrections
+            $file = mb_convert_encoding($file, 'utf-8', mb_detect_encoding($file));
+            $file = mb_convert_encoding($file, 'html-entities', 'utf-8');
+            $doc->loadHTML($file);
             $xpathdom = new DOMXPath($doc);
 
             $xvalue = function (string $xpath) use ($xpathdom) {
