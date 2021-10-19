@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace ContentSyndication {
 
     use Parsedown;
+    use HTMLPurifier;
+    use HTMLPurifier_Config;
 
     class Text
     {
@@ -38,7 +40,19 @@ namespace ContentSyndication {
             return $this;
         }
 
-        public function hyphenizeForPath() : Text
+        public function purify(string $allowedTags = "strong,abbr,em,a[href],b,cite,i,sub,sup,code,del,blockquote,p,br,ul,li,ol,table,tr,td"): Text
+        {
+            static $purifier = null;
+            if ($purifier === null) {
+                $config = HTMLPurifier_Config::createDefault();
+                $config->set('HTML.Allowed', $allowedTags);
+                $purifier = new HTMLPurifier($config);
+            }
+            $this->text = $purifier->purify($this->text);
+            return $this;
+        }
+
+        public function hyphenizeForPath(): Text
         {
             $this->text = preg_replace('/[[:^alnum:]]/', "-", strtolower($this->text));
             return $this;
@@ -139,30 +153,30 @@ namespace ContentSyndication {
             //2) Translation CP1252.
             $trans = get_html_translation_table(HTML_ENTITIES);
             $trans['f'] = '&fnof;';    // Latin Small Letter F With Hook
-            $trans['-'] = array(
+            $trans['-'] = [
                 '&hellip;',     // Horizontal Ellipsis
                 '&tilde;',      // Small Tilde
                 '&ndash;'       // Dash
-            );
+            ];
             $trans["+"] = '&dagger;';    // Dagger
             $trans['#'] = '&Dagger;';    // Double Dagger
             $trans['M'] = '&permil;';    // Per Mille Sign
             $trans['S'] = '&Scaron;';    // Latin Capital Letter S With Caron
             $trans['OE'] = '&OElig;';    // Latin Capital Ligature OE
-            $trans["'"] = array(
+            $trans["'"] = [
                 '&lsquo;',  // Left Single Quotation Mark
                 '&rsquo;',  // Right Single Quotation Mark
                 '&rsaquo;', // Single Right-Pointing Angle Quotation Mark
                 '&sbquo;',  // Single Low-9 Quotation Mark
                 '&circ;',   // Modifier Letter Circumflex Accent
                 '&lsaquo;'  // Single Left-Pointing Angle Quotation Mark
-            );
+            ];
 
-            $trans['"'] = array(
+            $trans['"'] = [
                 '&ldquo;',  // Left Double Quotation Mark
                 '&rdquo;',  // Right Double Quotation Mark
                 '&bdquo;',  // Double Low-9 Quotation Mark
-            );
+            ];
 
             $trans['*'] = '&bull;';    // Bullet
             $trans['n'] = '&ndash;';    // En Dash
