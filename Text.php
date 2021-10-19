@@ -28,13 +28,13 @@ namespace ContentSyndication {
 
         public function parseDown(): Text
         {
-            (new Parsedown())->setSafeMode(true)->setBreaksEnabled(true)->text($this->text);
+            $this->text = (new Parsedown())->setSafeMode(true)->setBreaksEnabled(true)->text($this->text);
             return $this;
         }
 
         public function parseDownLine(): Text
         {
-            (new Parsedown())->setSafeMode(true)->setBreaksEnabled(true)->line($this->text);
+            $this->text = (new Parsedown())->setSafeMode(true)->setBreaksEnabled(true)->line($this->text);
             return $this;
         }
 
