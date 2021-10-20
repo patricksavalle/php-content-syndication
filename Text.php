@@ -56,7 +56,7 @@ namespace ContentSyndication {
 
         public function reEncode(string $encoding = "utf-8"): Text
         {
-            $this->text = mb_convert_encoding(mb_convert_encoding($this->text, $encoding, mb_detect_encoding($this->text)), 'html-entities', $encoding);
+            $this->text = mb_convert_encoding($this->text, $encoding, mb_detect_encoding($this->text));
             return $this;
         }
 
