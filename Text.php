@@ -7,6 +7,7 @@ namespace ContentSyndication {
     use Parsedown;
     use HTMLPurifier;
     use HTMLPurifier_Config;
+    use League\HTMLToMarkdown\HtmlConverter;
 
     class Text
     {
@@ -28,8 +29,21 @@ namespace ContentSyndication {
             return $this;
         }
 
+        public function parseUp(): Text
+        {
+            static $converter = null;
+            if ($converter === null) {
+                $converter = new HtmlConverter();
+                $converter->getConfig()->setOption('strip_tags', true);
+                $converter->getConfig()->setOption('strip_placeholder_links', true);
+            }
+            $this->text = $converter->convert($this->text);
+            return $this;
+        }
+
         public function parseDown(): Text
         {
+            // TODO use https://github.com/thephpleague/commonmark (needs PHP 7.4)
             $this->text = (new Parsedown())->setSafeMode(true)->setBreaksEnabled(true)->text($this->text);
             return $this;
         }
