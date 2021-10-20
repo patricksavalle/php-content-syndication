@@ -23,7 +23,7 @@ namespace ContentSyndication {
             $doc = new DomDocument;
             $file = (new HttpRequest)($url);
             $file = (new Text($file))->reEncode();
-            $doc->loadHTML($file);
+            $doc->loadHTML((string)$file);
             $xpathdom = new DOMXPath($doc);
 
             $xvalue = function (string $xpath) use ($xpathdom) {
