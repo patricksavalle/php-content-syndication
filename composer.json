@@ -26,7 +26,8 @@
     "ext-dom": "*",
     "ext-simplexml": "*",
     "ext-curl": "*",
-    "erusev/parsedown": "^1.7"
+    "erusev/parsedown": "^1.7",
+    "ezyang/htmlpurifier": "^4.13"
   },
   "autoload": {
     "psr-4": {

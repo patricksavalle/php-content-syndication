@@ -31,7 +31,7 @@ namespace ContentSyndication {
             $this->url = $url;
         }
 
-        public function get(): string
+        public function __toString(): string
         {
             return $this->url;
         }
@@ -252,6 +252,7 @@ namespace ContentSyndication {
             // ------------------------
 
             $this->url = "$scheme://$abs";
+            assert(filter_var($this->url, FILTER_VALIDATE_URL) !== false);
             return $this;
         }
     }

@@ -17,7 +17,7 @@ namespace ContentSyndication {
             $this->text = trim($text);
         }
 
-        public function get(): string
+        public function __toString(): string
         {
             return $this->text;
         }
@@ -37,6 +37,12 @@ namespace ContentSyndication {
         public function parseDownLine(): Text
         {
             $this->text = (new Parsedown())->setSafeMode(true)->setBreaksEnabled(true)->line($this->text);
+            return $this;
+        }
+
+        public function reEncode(string $encoding = "utf-8"): Text
+        {
+            $this->text = mb_convert_encoding(mb_convert_encoding($this->text, $encoding, mb_detect_encoding($this->text)), 'html-entities', $encoding);
             return $this;
         }
 

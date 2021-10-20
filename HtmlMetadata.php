@@ -22,9 +22,7 @@ namespace ContentSyndication {
             libxml_use_internal_errors(true);
             $doc = new DomDocument;
             $file = (new HttpRequest)($url);
-            // encoding corrections
-            $file = mb_convert_encoding($file, 'utf-8', mb_detect_encoding($file));
-            $file = mb_convert_encoding($file, 'html-entities', 'utf-8');
+            $file = (new Text($file))->reEncode();
             $doc->loadHTML($file);
             $xpathdom = new DOMXPath($doc);
 
@@ -36,7 +34,7 @@ namespace ContentSyndication {
                 = $xvalue('/*/head/meta[@property="og:url"]/@content')
                 ?? $xvalue('/*/head/meta[@name="twitter:url"]/@content')
                 ?? $xvalue('/*/head/link[@rel="canonical"]/@href')
-                ?? (new Url($url))->normalized()->get();
+                ?? (new Url($url))->normalized();
 
             $metadata['title']
                 = $xvalue('/*/head/meta[@property="og:title"]/@content')
@@ -75,9 +73,9 @@ namespace ContentSyndication {
             $metadata['copyright'] = $xvalue('/*/head/meta[@name="copyright"]/@content');
 
             // some URL magic
-            if (isset($metadata['image'])) $metadata['image'] = (new Url($metadata['image']))->absolutized($metadata['url'])->get();
-            if (isset($metadata['rss'])) $metadata['rss'] = (new Url($metadata['rss']))->absolutized($metadata['url'])->get();
-            if (isset($metadata['atom'])) $metadata['atom'] = (new Url($metadata['atom']))->absolutized($metadata['url'])->get();
+            if (isset($metadata['image'])) $metadata['image'] = (new Url($metadata['image']))->absolutized($metadata['url']);
+            if (isset($metadata['rss'])) $metadata['rss'] = (new Url($metadata['rss']))->absolutized($metadata['url']);
+            if (isset($metadata['atom'])) $metadata['atom'] = (new Url($metadata['atom']))->absolutized($metadata['url']);
 
             // return keywords as unique array, minimum clean up
             $metadata['keywords'] = [];
