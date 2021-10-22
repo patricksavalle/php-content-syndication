@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace ContentSyndication {
 
+    use Genert\BBCode\BBCode;
     use Parsedown;
     use HTMLPurifier;
     use HTMLPurifier_Config;
@@ -43,8 +44,13 @@ namespace ContentSyndication {
 
         public function parseDown(): Text
         {
-            // TODO use https://github.com/thephpleague/commonmark (needs PHP 7.4)
             $this->text = (new Parsedown())->setSafeMode(true)->setBreaksEnabled(true)->text($this->text);
+            return $this;
+        }
+
+        public function BBtoHTML(): Text
+        {
+            $this->text = (new BBCode)->convertToHtml($this->text);
             return $this;
         }
 
