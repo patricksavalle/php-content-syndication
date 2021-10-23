@@ -80,7 +80,7 @@ namespace ContentSyndication {
 
         public function hyphenizeForPath(): Text
         {
-            $this->text = preg_replace('/[[:^alnum:]]/', "-", strtolower($this->text));
+            $this->text = str_replace("--", "-", preg_replace('/[[:^alnum:]]/', "-", strtolower($this->text)));
             return $this;
         }
 
