@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace ContentSyndication {
 
+    use Exception;
+
     class ArchiveOrg
     {
         /** @noinspection PhpUnusedParameterInspection */
@@ -26,6 +28,19 @@ namespace ContentSyndication {
             $tmp = "https://archive.org/wayback/available?url=$url";
             $json = json_decode((new HttpRequest)($tmp));
             return $json->archived_snapshots->closest->url ?? false;
+        }
+
+        static public function originalOrClosest(string $url)
+        {
+            $original = ArchiveOrg::original($url);
+            if ($original !== false) {
+                return $original;
+            }
+            $closest = ArchiveOrg::closest($url);
+            if ($closest !== false) {
+                return $closest;
+            }
+            throw new Exception("", 404);
         }
 
         static public function archive(string $url): string
