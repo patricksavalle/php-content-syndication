@@ -6,7 +6,8 @@ namespace ContentSyndication {
 
     class ArchiveOrg
     {
-        static public function check(string $url): bool
+        /** @noinspection PhpUnusedParameterInspection */
+        static public function original(string $url, bool $follow_redirects = false)
         {
             assert(filter_var($url, FILTER_VALIDATE_URL) !== false);
             // HEAD request
@@ -16,10 +17,10 @@ namespace ContentSyndication {
             curl_exec($ch);
             $result = curl_getinfo($ch, CURLINFO_HTTP_CODE);
             curl_close($ch);
-            return $result >= 200 and $result < 400;
+            return ($result >= 200 and $result < 400) ? $url : false;
         }
 
-        static public function closest(string $url) /*: string*/
+        static public function closest(string $url)
         {
             assert(filter_var($url, FILTER_VALIDATE_URL) !== false);
             $tmp = "https://archive.org/wayback/available?url=$url";
