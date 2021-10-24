@@ -42,15 +42,21 @@ namespace ContentSyndication {
             return $this;
         }
 
-        public function parseDown(): Text
+        public function nl2br(): Text
         {
-            $this->text = (new Parsedown())->setSafeMode(true)->setBreaksEnabled(true)->text($this->text);
+            $this->text = nl2br($this->text);
             return $this;
         }
 
         public function BBtoHTML(): Text
         {
             $this->text = (new BBCode)->convertToHtml($this->text);
+            return $this;
+        }
+
+        public function parseDown(): Text
+        {
+            $this->text = (new Parsedown())->setSafeMode(true)->setBreaksEnabled(true)->text($this->text);
             return $this;
         }
 
