@@ -34,7 +34,7 @@ namespace ContentSyndication {
                 = $xvalue('/*/head/meta[@property="og:url"]/@content')
                 ?? $xvalue('/*/head/meta[@name="twitter:url"]/@content')
                 ?? $xvalue('/*/head/link[@rel="canonical"]/@href')
-                ?? (new Url($url))->normalized();
+                ?? (string)(new Url($url))->normalized();
 
             $metadata['title']
                 = $xvalue('/*/head/meta[@property="og:title"]/@content')
@@ -73,9 +73,9 @@ namespace ContentSyndication {
             $metadata['copyright'] = $xvalue('/*/head/meta[@name="copyright"]/@content');
 
             // some URL magic
-            if (isset($metadata['image'])) $metadata['image'] = (new Url($metadata['image']))->absolutized($metadata['url']);
-            if (isset($metadata['rss'])) $metadata['rss'] = (new Url($metadata['rss']))->absolutized($metadata['url']);
-            if (isset($metadata['atom'])) $metadata['atom'] = (new Url($metadata['atom']))->absolutized($metadata['url']);
+            if (isset($metadata['image'])) $metadata['image'] = (string)(new Url($metadata['image']))->absolutized($metadata['url']);
+            if (isset($metadata['rss'])) $metadata['rss'] = (string)(new Url($metadata['rss']))->absolutized($metadata['url']);
+            if (isset($metadata['atom'])) $metadata['atom'] = (string)(new Url($metadata['atom']))->absolutized($metadata['url']);
 
             // return keywords as unique array, minimum clean up
             $metadata['keywords'] = [];
