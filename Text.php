@@ -69,6 +69,7 @@ namespace ContentSyndication {
         public function reEncode(string $encoding = "utf-8"): Text
         {
             $this->text = mb_convert_encoding($this->text, $encoding, mb_detect_encoding($this->text));
+            $this->text = mb_convert_encoding($this->text, 'html-entities', $encoding);
             return $this;
         }
 
@@ -86,7 +87,7 @@ namespace ContentSyndication {
 
         public function hyphenize(): Text
         {
-            $this->text = trim(str_replace("--", "-", preg_replace('/[[:^alnum:]]/', "-", strtolower($this->text)))," -\t\n\r\0\x0B");
+            $this->text = trim(str_replace("--", "-", preg_replace('/[[:^alnum:]]/', "-", strtolower($this->text))), " -\t\n\r\0\x0B");
             return $this;
         }
 
