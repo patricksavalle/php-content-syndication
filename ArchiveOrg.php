@@ -19,7 +19,8 @@ namespace ContentSyndication {
             curl_exec($ch);
             $result = curl_getinfo($ch, CURLINFO_HTTP_CODE);
             curl_close($ch);
-            return ($result >= 200 and $result < 400) ? $url : false;
+            // do NOT trust redirects or moved to
+            return ($result === 200) ? $url : false;
         }
 
         static public function closest(string $url)
