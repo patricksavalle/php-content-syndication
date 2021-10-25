@@ -13,7 +13,7 @@ namespace ContentSyndication {
         {
             assert(filter_var($url, FILTER_VALIDATE_URL) !== false);
             // assume no modern site has http anymore AND https is content-equivalent
-            str_replace("http://", "https://", $url);
+            $url = str_replace("http://", "https://", $url);
             // HEAD request
             $ch = curl_init($url);
             curl_setopt($ch, CURLOPT_NOBODY, true); // set to HEAD request
