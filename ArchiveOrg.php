@@ -28,8 +28,6 @@ namespace ContentSyndication {
         static public function closest(string $url)
         {
             assert(filter_var($url, FILTER_VALIDATE_URL) !== false);
-            // assume no modern site has http anymore AND https is content-equivalent
-            $url = str_replace("http://", "https://", $url);
             $tmp = "https://archive.org/wayback/available?url=$url";
             $json = json_decode((new HttpRequest)($tmp));
             return $json->archived_snapshots->closest->url ?? false;
