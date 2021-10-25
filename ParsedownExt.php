@@ -9,7 +9,9 @@ namespace ContentSyndication {
         // Add target to links
         protected function element(array $Element)
         {
-            $Element['attributes']['target'] = '_blank';
+            if (strcasecmp($Element['name'],'a')===0) {
+                $Element['attributes']['target'] = '_blank';
+            }
             return parent::element($Element);
         }
     }
