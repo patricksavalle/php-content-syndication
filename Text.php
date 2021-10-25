@@ -53,15 +53,15 @@ namespace ContentSyndication {
             return $this;
         }
 
-        public function parseDown(): Text
+        public function parseDown(callable $preprocessor = null): Text
         {
-            $this->text = (new ParsedownExt())->setSafeMode(true)->setBreaksEnabled(true)->text($this->text);
+            $this->text = (new ParsedownExt($preprocessor))->setSafeMode(true)->setBreaksEnabled(true)->text($this->text);
             return $this;
         }
 
-        public function parseDownLine(): Text
+        public function parseDownLine(callable $preprocessor = null): Text
         {
-            $this->text = (new ParsedownExt())->setSafeMode(true)->setBreaksEnabled(true)->line($this->text);
+            $this->text = (new ParsedownExt($preprocessor))->setSafeMode(true)->setBreaksEnabled(true)->line($this->text);
             return $this;
         }
 

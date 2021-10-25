@@ -4,13 +4,22 @@ declare(strict_types=1);
 
 namespace ContentSyndication {
 
-    class ParsedownExt extends \Parsedown
+    use Parsedown;
+
+    class ParsedownExt extends Parsedown
     {
-        // Add target to links
+        protected $processor;
+
+        public function __construct(callable $ElementProcessor = null)
+        {
+            $this->processor = $ElementProcessor;
+        }
+
+        /** @noinspection PhpMissingReturnTypeInspection */
         protected function element(array $Element)
         {
-            if (strcasecmp($Element['name'],'a')===0) {
-                $Element['attributes']['target'] = '_blank';
+            if (is_callable($this->processor)) {
+                $Element = call_user_func($this->processor, $Element);
             }
             return parent::element($Element);
         }
