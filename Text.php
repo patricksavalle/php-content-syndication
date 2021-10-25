@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace ContentSyndication {
 
     use Genert\BBCode\BBCode;
-    use Parsedown;
     use HTMLPurifier;
     use HTMLPurifier_Config;
     use League\HTMLToMarkdown\HtmlConverter;
@@ -56,13 +55,13 @@ namespace ContentSyndication {
 
         public function parseDown(): Text
         {
-            $this->text = (new Parsedown())->setSafeMode(true)->setBreaksEnabled(true)->text($this->text);
+            $this->text = (new ParsedownExt())->setSafeMode(true)->setBreaksEnabled(true)->text($this->text);
             return $this;
         }
 
         public function parseDownLine(): Text
         {
-            $this->text = (new Parsedown())->setSafeMode(true)->setBreaksEnabled(true)->line($this->text);
+            $this->text = (new ParsedownExt())->setSafeMode(true)->setBreaksEnabled(true)->line($this->text);
             return $this;
         }
 
