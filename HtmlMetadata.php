@@ -22,7 +22,7 @@ namespace ContentSyndication {
             libxml_use_internal_errors(true);
             $doc = new DomDocument;
             $response = new HttpRequest($url);
-            if (strcasecmp($response->getContentType(), "text/html") !== 0) {
+            if (stripos($response->getContentType(), "text/html") !== 0) {
                 throw new Exception("type must be text/html");
             }
             $file = $response->getContent();
