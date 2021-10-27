@@ -1,4 +1,4 @@
-<?php
+<?php /** @noinspection HttpUrlsUsage */
 
 declare(strict_types=1);
 
@@ -28,8 +28,8 @@ namespace ContentSyndication {
         static public function closest(string $url)
         {
             assert(filter_var($url, FILTER_VALIDATE_URL) !== false);
-            $tmp = "https://archive.org/wayback/available?url=$url";
-            $json = json_decode((new HttpRequest)($tmp));
+            $response = new HttpRequest("https://archive.org/wayback/available?url=$url");
+            $json = json_decode($response->getContent());
             return $json->archived_snapshots->closest->url ?? false;
         }
 
@@ -50,9 +50,7 @@ namespace ContentSyndication {
         {
             assert(filter_var($url, FILTER_VALIDATE_URL) !== false);
             // store in webarchive.com and get newly archived url back
-            $url = "https://web.archive.org/save/$url";
-            (new HttpRequest)($url);
-            return $url;
+            return (new HttpRequest("https://web.archive.org/save/$url"))->getEffectiveUrl();
         }
 
         static public function archiveAsync(string $url)

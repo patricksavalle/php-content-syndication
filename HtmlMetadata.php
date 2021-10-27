@@ -21,7 +21,11 @@ namespace ContentSyndication {
             $metadata = [];
             libxml_use_internal_errors(true);
             $doc = new DomDocument;
-            $file = (new HttpRequest)($url);
+            $response = new HttpRequest($url);
+            if (strcasecmp($response->getContentType(), "text/html") !== 0) {
+                throw new Exception("type must be text/html");
+            }
+            $file = $response->getContent();
             $file = (new Text($file))->reEncode();
             $doc->loadHTML((string)$file);
             $xpathdom = new DOMXPath($doc);
