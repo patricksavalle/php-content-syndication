@@ -15,9 +15,9 @@ namespace ContentSyndication {
     {
         protected $xml;
 
-        public function __invoke(string $url, string $user = "", string $pass = ""): array
+        public function __invoke(string $url): array
         {
-            $xml = self::loadXml($url, $user, $pass);
+            $xml = self::loadXml($url);
             if ($xml->channel) {
                 return self::fromRss($xml)->toArray();
             } else {
@@ -25,14 +25,14 @@ namespace ContentSyndication {
             }
         }
 
-        public static function loadRss(string $url, string $user = "", string $pass = ""): XmlFeed
+        public static function loadRss(string $url): XmlFeed
         {
-            return self::fromRss(self::loadXml($url, $user, $pass));
+            return self::fromRss(self::loadXml($url));
         }
 
-        public static function loadAtom(string $url, string $user = "", string $pass = ""): XmlFeed
+        public static function loadAtom(string $url): XmlFeed
         {
-            return self::fromAtom(self::loadXml($url, $user, $pass));
+            return self::fromAtom(self::loadXml($url));
         }
 
         private static function fromRss(SimpleXMLElement $xml): XmlFeed
@@ -104,9 +104,9 @@ namespace ContentSyndication {
             return $arr;
         }
 
-        private static function loadXml(string $url, string $user, string $pass): SimpleXMLElement
+        private static function loadXml(string $url): SimpleXMLElement
         {
-            $data = trim((new HttpRequest)($url, $user, $pass));
+            $data = trim((new HttpRequest($url))->getContent());
             return new SimpleXMLElement($data, LIBXML_NOWARNING | LIBXML_NOERROR | LIBXML_NOCDATA);
         }
 
