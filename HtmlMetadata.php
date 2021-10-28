@@ -23,7 +23,7 @@ namespace ContentSyndication {
             $doc = new DomDocument;
             $response = new HttpRequest($url);
             if (stripos($response->getContentType(), "text/html") !== 0) {
-                throw new Exception("type must be text/html");
+                throw new Exception("type must be text/html", 400);
             }
             $file = $response->getContent();
             $file = (new Text($file))->reEncode();
