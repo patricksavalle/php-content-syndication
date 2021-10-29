@@ -27,7 +27,6 @@
     "ext-simplexml": "*",
     "ext-curl": "*",
     "erusev/parsedown": "^1.7",
-    "ezyang/htmlpurifier": "^4.13",
     "league/html-to-markdown": "^5.0",
     "genert/bbcode": "^1.1"
   },

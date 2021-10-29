@@ -5,8 +5,6 @@ declare(strict_types=1);
 namespace ContentSyndication {
 
     use Genert\BBCode\BBCode;
-    use HTMLPurifier;
-    use HTMLPurifier_Config;
     use League\HTMLToMarkdown\HtmlConverter;
 
     class Text
@@ -26,6 +24,12 @@ namespace ContentSyndication {
         public function blurbify(int $blurbsize = 250): Text
         {
             $this->text = substr(strip_tags($this->text), 0, $blurbsize);
+            return $this;
+        }
+
+        public function stripTags(): Text
+        {
+            $this->text = strip_tags($this->text);
             return $this;
         }
 
@@ -69,25 +73,6 @@ namespace ContentSyndication {
         {
             $this->text = mb_convert_encoding($this->text, $encoding, mb_detect_encoding($this->text));
             $this->text = mb_convert_encoding($this->text, 'html-entities', $encoding);
-            return $this;
-        }
-
-        public function purify(string $allowedTags = "strong,abbr,em,a[href],b,cite,i,sub,sup,code,del,blockquote,p,br,ul,li,ol,table,tr,td"): Text
-        {
-            static $allow_domains = [
-                "",
-            ];
-            static $purifier = null;
-            if ($purifier === null) {
-                $config = HTMLPurifier_Config::createDefault();
-                $config->set('HTML.Allowed', $allowedTags);
-                $config->set('HTML.SafeEmbed', true);
-                $config->set('HTML.SafeObject', true);
-                $config->set('HTML.TargetBlank', true);
-                $config->set('AutoFormat.Linkify', true);
-                $purifier = new HTMLPurifier($config);
-            }
-            $this->text = $purifier->purify($this->text);
             return $this;
         }
 

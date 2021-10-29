@@ -31,7 +31,7 @@ namespace ContentSyndication {
             $xpathdom = new DOMXPath($doc);
 
             $xvalue = function (string $xpath) use ($xpathdom) {
-                return @$xpathdom->query($xpath)->item(0)->nodeValue;
+                return $xpathdom->query($xpath)->item(0)->nodeValue ?? null;
             };
 
             $metadata['url']
@@ -56,6 +56,21 @@ namespace ContentSyndication {
                 ?? $xvalue('/*/head/meta[@name="twitter:image"]/@content')
                 ?? $xvalue('/*/head/link[@rel="apple-touch-icon"]/@href');
 
+            $metadata['video']
+                = $xvalue('//meta[@property="og:video"]/@content');
+
+            $metadata['video:type']
+                = $xvalue('//meta[@property="og:video:type"]/@content');
+
+            $metadata['video:release_date']
+                = $xvalue('//meta[@property="og:video:release_date"]/@content');
+
+            $metadata['video:duration']
+                = $xvalue('//meta[@property="og:video:duration"]/@content');
+
+            $metadata['video:series']
+                = $xvalue('//meta[@property="og:video:series"]/@content');
+
             $metadata['site_name']
                 = $xvalue('/*/head/meta[@property="og:site_name"]/@content')
                 ?? $xvalue('/*/head/meta[@name="twitter:site"]/@content');
@@ -78,6 +93,7 @@ namespace ContentSyndication {
 
             // some URL magic
             if (isset($metadata['image'])) $metadata['image'] = (string)(new Url($metadata['image']))->absolutized($metadata['url']);
+            if (isset($metadata['video'])) $metadata['video'] = (string)(new Url($metadata['video']))->absolutized($metadata['url']);
             if (isset($metadata['rss'])) $metadata['rss'] = (string)(new Url($metadata['rss']))->absolutized($metadata['url']);
             if (isset($metadata['atom'])) $metadata['atom'] = (string)(new Url($metadata['atom']))->absolutized($metadata['url']);
 
