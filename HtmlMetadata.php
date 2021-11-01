@@ -75,6 +75,11 @@ namespace ContentSyndication {
                 = $xvalue('/*/head/meta[@property="og:site_name"]/@content')
                 ?? $xvalue('/*/head/meta[@name="twitter:site"]/@content');
 
+            $metadata['language']
+                = $xvalue('/*/head/meta[@http-equiv="content-language"]/@content')
+                ?? $xvalue('//html/@lang');
+            $metadata['language'] = substr($metadata['language'] ?? "", 0, 2);
+
             // TODO use JSON-LD data
             // https://jsonld.com/news-article/
             // https://jsonld.com/blog-post/
