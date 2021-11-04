@@ -44,11 +44,13 @@ namespace ContentSyndication {
                 = $xvalue('/*/head/meta[@property="og:title"]/@content')
                 ?? $xvalue('/*/head/meta[@name="twitter:title"]/@content')
                 ?? $xvalue('/*/head/title');
+            $metadata["title"] = (string)(new Text($metadata["title"]))->reEncode();
 
             $metadata['description']
                 = $xvalue('/*/head/meta[@property="og:description"]/@content')
                 ?? $xvalue('/*/head/meta[@name="twitter:description"]/@content')
                 ?? $xvalue('/*/head/meta[@name="description"]/@content');
+            $metadata["description"] = (string)(new Text($metadata["description"]))->reEncode();
 
             // TODO can be multiple images
             $metadata['image']
