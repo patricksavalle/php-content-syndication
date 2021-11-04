@@ -31,7 +31,9 @@ namespace ContentSyndication {
             $xpathdom = new DOMXPath($doc);
 
             $xvalue = function (string $xpath) use ($xpathdom) {
-                return $xpathdom->query($xpath)->item(0)->nodeValue ?? null;
+                $return = $xpathdom->query($xpath)->item(0)->nodeValue ?? null;
+                if ($return !== null) $return = (string)(new Text($return))->reEncode();
+                return $return;
             };
 
             $metadata['url']
@@ -44,13 +46,11 @@ namespace ContentSyndication {
                 = $xvalue('/*/head/meta[@property="og:title"]/@content')
                 ?? $xvalue('/*/head/meta[@name="twitter:title"]/@content')
                 ?? $xvalue('/*/head/title');
-            $metadata["title"] = (string)(new Text($metadata["title"]))->reEncode();
 
             $metadata['description']
                 = $xvalue('/*/head/meta[@property="og:description"]/@content')
                 ?? $xvalue('/*/head/meta[@name="twitter:description"]/@content')
                 ?? $xvalue('/*/head/meta[@name="description"]/@content');
-            $metadata["description"] = (string)(new Text($metadata["description"]))->reEncode();
 
             // TODO can be multiple images
             $metadata['image']
