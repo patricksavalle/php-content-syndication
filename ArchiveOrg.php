@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace ContentSyndication {
 
-    use Exception;
-
     class ArchiveOrg
     {
         /** @noinspection PhpUnusedParameterInspection */
@@ -15,6 +13,7 @@ namespace ContentSyndication {
             $ch = curl_init($url);
             curl_setopt($ch, CURLOPT_NOBODY, true); // set to HEAD request
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, true); // don't output the response
+            curl_setopt($ch, CURLOPT_USERAGENT, "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/92.0.4515.159 Safari/537.36 OPR/78.0.4093.112"); // some feeds require a user agent
             curl_exec($ch);
             $result = curl_getinfo($ch, CURLINFO_HTTP_CODE);
             curl_close($ch);
@@ -40,7 +39,7 @@ namespace ContentSyndication {
             if ($closest !== false) {
                 return $closest;
             }
-            throw new Exception("", 404);
+            return $url;
         }
 
         static public function archive(string $url): string
