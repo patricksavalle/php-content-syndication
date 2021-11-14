@@ -37,6 +37,16 @@ namespace ContentSyndication {
             return $this->url;
         }
 
+        public function getDomain()
+        {
+            $pieces = parse_url($this->url);
+            $domain = $pieces['host'] ?? $pieces['path'];
+            if (preg_match('/(?P<domain>[a-z0-9][a-z0-9\-]{1,63}\.[a-z\.]{2,6})$/i', $domain, $regs)) {
+                $this->url = $regs['domain'];
+            }
+            return $this;
+        }
+
         /*
          * Try to construct a normalized / canonical URL.
          * This will avoid different URL's to the same resource in the system.
@@ -52,7 +62,7 @@ namespace ContentSyndication {
 
             $newUrl = "";
             $url = parse_url($this->url);
-            $defaultSchemes = array("http" => 80, "https" => 443);
+            $defaultSchemes = ["http" => 80, "https" => 443];
 
             if (isset($url['scheme'])) {
                 $url['scheme'] = strtolower($url['scheme']);
@@ -96,14 +106,14 @@ namespace ContentSyndication {
                  * Heavily rewritten version of urlDecodeUnreservedChars() in Glen Scott's url-normalizer.
                  */
 
-                $u = array();
+                $u = [];
                 for ($o = 65; $o <= 90; $o++)
                     $u[] = dechex($o);
                 for ($o = 97; $o <= 122; $o++)
                     $u[] = dechex($o);
                 for ($o = 48; $o <= 57; $o++)
                     $u[] = dechex($o);
-                $chrs = array('-', '.', '_', '~');
+                $chrs = ['-', '.', '_', '~'];
                 foreach ($chrs as $chr)
                     $u[] = dechex(ord($chr));
                 $url['path'] = preg_replace_callback(
@@ -115,10 +125,10 @@ namespace ContentSyndication {
                         return chr(hexdec($matches[0]));
                     }, $url['path']);
                 // Remove directory index
-                $defaultIndexes = array("/default\.aspx/" => "default.aspx", "/default\.asp/" => "default.asp",
+                $defaultIndexes = ["/default\.aspx/" => "default.aspx", "/default\.asp/" => "default.asp",
                     "/index\.html/" => "index.html", "/index\.htm/" => "index.htm",
                     "/default\.html/" => "default.html", "/default\.htm/" => "default.htm",
-                    "/index\.php/" => "index.php", "/index\.jsp/" => "index.jsp");
+                    "/index\.php/" => "index.php", "/index\.jsp/" => "index.jsp"];
                 foreach ($defaultIndexes as $index => $strip) {
                     if (preg_match($index, $url['path']))
                         $url['path'] = str_replace($strip, "", $url['path']);
@@ -244,7 +254,7 @@ namespace ContentSyndication {
             // replace '//' or '/./' or '/foo/../' with '/' */
             // -------------------------------------------------
 
-            $re = array('#(/\.?/)#', '#/(?!\.\.)[^/]+/\.\./#');
+            $re = ['#(/\.?/)#', '#/(?!\.\.)[^/]+/\.\./#'];
             /** @noinspection PhpStatementHasEmptyBodyInspection */
             for ($n = 1; $n > 0; $abs = preg_replace($re, '/', $abs, -1, $n)) ;
 
