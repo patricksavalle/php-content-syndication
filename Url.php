@@ -24,6 +24,7 @@ namespace ContentSyndication {
             "action_type_map",
             "action_ref_map",
             "__twitter_impression",
+            "referrer",
         ];
 
         public function __construct(string $url)
