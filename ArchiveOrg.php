@@ -31,6 +31,11 @@ namespace ContentSyndication {
 
         static public function originalOrClosest(string $url)
         {
+            foreach ([
+                         "https://t.me",
+                     ] as $bypass) {
+                if (stripos($url, $bypass) === 0) return $url;
+            }
             $original = ArchiveOrg::original($url);
             if ($original !== false) {
                 return $original;

@@ -37,7 +37,7 @@ namespace ContentSyndication {
             return $this->url;
         }
 
-        public function getDomain()
+        public function getDomain(): Url
         {
             $pieces = parse_url($this->url);
             $domain = $pieces['host'] ?? $pieces['path'];
