@@ -25,6 +25,7 @@ namespace ContentSyndication {
             "action_ref_map",
             "__twitter_impression",
             "referrer",
+//            "trk=public_profile_article_view",
         ];
 
         public function __construct(string $url)
@@ -37,13 +38,9 @@ namespace ContentSyndication {
             return $this->url;
         }
 
-        public function getDomain(): Url
+        public function getHost(): Url
         {
-            $pieces = parse_url($this->url);
-            $domain = $pieces['host'] ?? $pieces['path'];
-            if (preg_match('/(?P<domain>[a-z0-9][a-z0-9\-]{1,63}\.[a-z\.]{2,6})$/i', $domain, $regs)) {
-                $this->url = $regs['domain'];
-            }
+            $this->url = parse_url($this->url)['host'] ?? null;
             return $this;
         }
 
