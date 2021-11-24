@@ -36,28 +36,36 @@ namespace ContentSyndication {
                 return $return;
             };
 
+            $jsonld = json_decode($xvalue('//script[@type="application/ld+json"]/text()') ?? "", true);
+
             $metadata['url']
                 = $xvalue('/*/head/link[@rel="canonical"]/@href')
                 ?? $xvalue('/*/head/meta[@name="twitter:url"]/@content')
                 ?? $xvalue('/*/head/meta[@property="og:url"]/@content')
+                ?? $jsonld['url']
                 ?? (string)(new Url($url))->normalized();
 
             $metadata['title']
                 = $xvalue('/*/head/meta[@property="og:title"]/@content')
                 ?? $xvalue('/*/head/meta[@name="twitter:title"]/@content')
                 ?? $xvalue('/*/head/meta[@name="dc:Title"]/@content')
-                ?? $xvalue('/*/head/title');
+                ?? $xvalue('/*/head/title')
+                ?? $jsonld['headline']
+                ?? null;
 
             $metadata['description']
                 = $xvalue('/*/head/meta[@name="description"]/@content')
                 ?? $xvalue('/*/head/meta[@property="dc:Description"]/@content')
                 ?? $xvalue('/*/head/meta[@property="og:description"]/@content')
-                ?? $xvalue('/*/head/meta[@name="twitter:description"]/@content');
+                ?? $xvalue('/*/head/meta[@name="twitter:description"]/@content')
+                ?? $jsonld['description']
+                ?? null;
 
-            // TODO can be multiple images
+            // TODO can be multiple images, for now return first
             $metadata['image']
                 = $xvalue('//meta[@property="og:image"]/@content')
-                ?? $xvalue('/*/head/meta[@name="twitter:image"]/@content');
+                ?? $xvalue('/*/head/meta[@name="twitter:image"]/@content')
+                ?? $jsonld['image'][0] ?? $jsonld['image'] ?? null;
 
             $metadata['video']
                 = $xvalue('//meta[@property="og:video"]/@content');
@@ -84,20 +92,19 @@ namespace ContentSyndication {
                 ?? $xvalue('//html/@lang');
             $metadata['language'] = substr($metadata['language'] ?? "", 0, 2);
 
-            // TODO use JSON-LD data
-            // https://jsonld.com/news-article/
-            // https://jsonld.com/blog-post/
-
             // get RSS and Atom feeds
             // TODO can be multiple feeds, for now return first
             $metadata['rss'] = $xvalue('/*/head/link[@rel="alternate"][@type="application/rss+xml"]/@href');
             $metadata['atom'] = $xvalue('/*/head/link[@rel="alternate"][@type="application/atom+xml"]/@href');
 
             // keywords, author, copyright
-            $metadata_keywords =
-                $xvalue('/*/head/meta[@name="keywords"]/@content') . "," .
-                $xvalue('/*/head/meta[@name="news_keywords"]/@content');
-            $metadata['author'] = $xvalue('/*/head/meta[@name="author"]/@content');
+            $metadata_keywords
+                = $xvalue('/*/head/meta[@name="keywords"]/@content')
+                . ","
+                . $xvalue('/*/head/meta[@name="news_keywords"]/@content');
+            $metadata['author']
+                = $xvalue('/*/head/meta[@name="author"]/@content')
+                ?? $jsonld['author'] ?? $jsonld['editor'] ?? null;
             $metadata['copyright'] = $xvalue('/*/head/meta[@name="copyright"]/@content');
 
             // some URL magic
@@ -118,5 +125,4 @@ namespace ContentSyndication {
             return $metadata;
         }
     }
-
 }
