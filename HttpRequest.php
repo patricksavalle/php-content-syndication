@@ -20,7 +20,7 @@ namespace ContentSyndication {
             curl_setopt($this->curl, CURLOPT_AUTOREFERER, true); // set referer on redirect
             curl_setopt($this->curl, CURLOPT_USERAGENT, "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/92.0.4515.159 Safari/537.36 OPR/78.0.4093.112"); // some feeds require a user agent
             curl_setopt($this->curl, CURLOPT_HEADER, false);
-            curl_setopt($this->curl, CURLOPT_TIMEOUT, 20);
+            curl_setopt($this->curl, CURLOPT_TIMEOUT, 60);
             curl_setopt($this->curl, CURLOPT_ENCODING, '');
             curl_setopt($this->curl, CURLOPT_RETURNTRANSFER, true); // no echo, just return result
             $this->content = curl_exec($this->curl);
