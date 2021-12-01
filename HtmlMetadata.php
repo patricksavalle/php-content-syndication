@@ -48,17 +48,17 @@ namespace ContentSyndication {
             $metadata['title']
                 = $xvalue('/*/head/meta[@property="og:title"]/@content')
                 ?? $xvalue('/*/head/meta[@name="twitter:title"]/@content')
-                ?? $xvalue('/*/head/meta[@name="dc:Title"]/@content')
+                ?? $xvalue('/*/head/meta[@name="DC:Title"]/@content')
                 ?? $xvalue('/*/head/title')
                 ?? $jsonld['headline']
                 ?? null;
 
             $metadata['description']
-                = $xvalue('/*/head/meta[@name="description"]/@content')
-                ?? $xvalue('/*/head/meta[@property="dc:Description"]/@content')
+                = $xvalue('/*/head/meta[@property="DC:Description"]/@content')
                 ?? $xvalue('/*/head/meta[@property="og:description"]/@content')
                 ?? $xvalue('/*/head/meta[@name="twitter:description"]/@content')
                 ?? $jsonld['description']
+                ?? $xvalue('/*/head/meta[@name="description"]/@content')
                 ?? null;
 
             // TODO can be multiple images, for now return first
@@ -88,7 +88,7 @@ namespace ContentSyndication {
 
             $metadata['language']
                 = $xvalue('/*/head/meta[@http-equiv="content-language"]/@content')
-                ?? $xvalue('/*/head/meta[@name="dc:Language"]/@content')
+                ?? $xvalue('/*/head/meta[@name="DC:Language"]/@content')
                 ?? $xvalue('//html/@lang');
             $metadata['language'] = substr($metadata['language'] ?? "", 0, 2);
 
