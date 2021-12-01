@@ -237,7 +237,7 @@ namespace ContentSyndication {
             // destroy path if relative url points to root
             // ------------------------------------------
 
-            if ($this->url[0] === '/') {
+            if (($this->url[0] ?? '') === '/') {
                 $path = '';
             }
 
