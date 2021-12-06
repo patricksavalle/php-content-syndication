@@ -108,6 +108,9 @@ namespace ContentSyndication {
             $metadata['copyright'] = $xvalue('/*/head/meta[@name="copyright"]/@content');
 
             // some URL magic
+            if (filter_var($metadata['url'], FILTER_VALIDATE_URL) === false) {
+                $metadata['url'] = $url;
+            }
             if (isset($metadata['image'])) $metadata['image'] = (string)(new Url($metadata['image']))->absolutized($metadata['url']);
             if (isset($metadata['video'])) $metadata['video'] = (string)(new Url($metadata['video']))->absolutized($metadata['url']);
             if (isset($metadata['rss'])) $metadata['rss'] = (string)(new Url($metadata['rss']))->absolutized($metadata['url']);

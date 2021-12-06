@@ -260,7 +260,6 @@ namespace ContentSyndication {
             // ------------------------
 
             $this->url = "$scheme://$abs";
-            assert(filter_var($this->url, FILTER_VALIDATE_URL) !== false);
             return $this;
         }
     }
