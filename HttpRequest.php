@@ -33,29 +33,29 @@ namespace ContentSyndication {
             }
         }
 
-        public function getHttpCode()
+        public function getHttpCode(): int
         {
-            return $this->httpcode;
+            return (int)$this->httpcode;
         }
 
-        public function getContent()
+        public function getContent(): string
         {
             return $this->content;
         }
 
-        public function getEffectiveUrl()
+        public function getEffectiveUrl(): string
         {
             return curl_getinfo($this->curl, CURLINFO_EFFECTIVE_URL);
         }
 
-        public function getContentType()
+        public function getContentType(): string
         {
             return curl_getinfo($this->curl, CURLINFO_CONTENT_TYPE);
         }
 
-        public function getContentLength()
+        public function getContentLength(): int
         {
-            return curl_getinfo($this->curl, CURLINFO_CONTENT_LENGTH_DOWNLOAD);
+            return (int)curl_getinfo($this->curl, CURLINFO_CONTENT_LENGTH_DOWNLOAD);
         }
 
         public function __destruct()
