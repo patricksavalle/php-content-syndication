@@ -56,6 +56,13 @@ namespace ContentSyndication {
             return (new HttpRequest("https://web.archive.org/save/$url"))->getEffectiveUrl();
         }
 
+        static public function originalUrl(string $url): string
+        {
+            return preg_match("@https?:\/\/web\.archive\.org\/web\/\d+\/(?<archivedurl>.*)@", $url, $matches) === 1
+                ? $matches["archivedurl"]
+                : $url;
+        }
+
         static public function archiveAsync(string $url)
         {
             assert(filter_var($url, FILTER_VALIDATE_URL) !== false);
