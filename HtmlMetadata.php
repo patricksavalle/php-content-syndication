@@ -92,6 +92,9 @@ namespace ContentSyndication {
                 = $xvalue('//meta[@property="og:image"]/@content')
                 ?? $xvalue('/*/head/meta[@name="twitter:image"]/@content')
                 ?? $jsonld['image'][0] ?? $jsonld['image'] ?? null;
+            if (!is_string($metadata['image'])) {
+                $metadata['image'] = null;
+            }
 
             $metadata['video']
                 = $xvalue('//meta[@property="og:video"]/@content');
