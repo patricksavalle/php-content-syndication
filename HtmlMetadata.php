@@ -37,9 +37,13 @@ namespace ContentSyndication {
 
             } catch (Exception $e) {
 
-                // if blocked or failed, misuse archive.org as crawler
+                // if blocked or failed, check if archive.org has a version
                 error_log("retrying metadata-inspection on ($url) because: " . $e->getMessage());
-                $metadata = $httpRequest(ArchiveOrg::archive($url));
+                $archived_url = ArchiveOrg::closest($url);
+                if ($archived_url === false) {
+                    throw $e;
+                }
+                $metadata = $httpRequest($archived_url);
             }
             return $metadata;
         }
