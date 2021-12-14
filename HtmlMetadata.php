@@ -17,16 +17,42 @@ namespace ContentSyndication {
          */
         function __invoke(string $url): array
         {
-            assert(filter_var($url, FILTER_VALIDATE_URL) !== false);
-            $metadata = [];
+            $httpRequest = function ($url): array {
+                assert(filter_var($url, FILTER_VALIDATE_URL) !== false);
+                $response = new HttpRequest($url);
+                if (stripos($response->getContentType(), "text/html") !== 0) {
+                    throw new Exception("type must be text/html", 400);
+                }
+                $metadata = $this->extractMetadata($response->getContent(), $url);
+                if (empty($metadata["description"])) {
+                    throw new Exception("no metadata found", 400);
+                }
+                return $metadata;
+            };
+
+            try {
+
+                // first try original URL
+                $metadata = $httpRequest($url);
+
+            } catch (Exception $e) {
+
+                // if blocked or failed, try an archived version
+                error_log("retrying metadata-inspection on ($url) because: " . $e->getMessage());
+                $archived_url = ArchiveOrg::closest($url);
+                if ($archived_url === false) {
+                    throw $e;
+                }
+                $metadata = $httpRequest($archived_url);
+            }
+            return $metadata;
+        }
+
+        protected function extractMetadata(string $file, string $url): array
+        {
+            $file = (new Text($file))->reEncode();
             libxml_use_internal_errors(true);
             $doc = new DomDocument;
-            $response = new HttpRequest($url);
-            if (stripos($response->getContentType(), "text/html") !== 0) {
-                throw new Exception("type must be text/html", 400);
-            }
-            $file = $response->getContent();
-            $file = (new Text($file))->reEncode();
             $doc->loadHTML((string)$file);
             $xpathdom = new DOMXPath($doc);
 
