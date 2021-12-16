@@ -24,7 +24,7 @@ namespace ContentSyndication {
                     throw new Exception("type must be text/html", 400);
                 }
                 $metadata = $this->extractMetadata($response->getContent(), $url);
-                if (empty($metadata["description"])) {
+                if (empty($metadata["description"]) and empty($metadata["image"])) {
                     throw new Exception("no metadata found", 400);
                 }
                 return $metadata;
