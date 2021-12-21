@@ -25,6 +25,8 @@ namespace ContentSyndication {
             "action_ref_map",
             "__twitter_impression",
             "referrer",
+            "mktcid",
+            "mktcval",
 //            "trk=public_profile_article_view",
         ];
 
