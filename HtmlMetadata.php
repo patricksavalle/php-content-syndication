@@ -10,12 +10,7 @@ namespace ContentSyndication {
 
     class HtmlMetadata
     {
-        /**
-         * Normalize URL's so different URL's to the same URI can be compared
-         *
-         * @throws Exception
-         */
-        function __invoke(string $url): array
+        public function GetMetadata(string $url): array
         {
             assert(filter_var($url, FILTER_VALIDATE_URL) !== false);
             $response = new HttpRequest($url);
@@ -27,6 +22,26 @@ namespace ContentSyndication {
                 throw new Exception("no metadata found", 400);
             }
             return $metadata;
+        }
+
+        /**
+         * Normalize URL's so different URL's to the same URI can be compared
+         *
+         * @throws Exception
+         */
+        function __invoke(string $url): array
+        {
+            // Mangle function signature and try to get from cache
+            $cache_key = hash('md5', __METHOD__ . $url);
+            $result = apcu_fetch($cache_key);
+            if ($result === false) {
+                // if not, call the function and cache result
+                $result = $this->GetMetadata($url);
+                if (apcu_add($cache_key, $result, 60 * 60) === false) {
+                    error_log("APCu error on method: " . __METHOD__);
+                }
+            }
+            return $result;
         }
 
         protected function extractMetadata(string $file, string $url): array

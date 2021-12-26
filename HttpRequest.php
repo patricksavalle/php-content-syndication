@@ -60,7 +60,7 @@ namespace ContentSyndication {
 
         public function __destruct()
         {
-            curl_close($this->curl);
+            if (is_resource($this->curl)) curl_close($this->curl);
         }
     }
 }

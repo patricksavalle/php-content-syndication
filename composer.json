@@ -26,6 +26,7 @@
     "ext-dom": "*",
     "ext-simplexml": "*",
     "ext-curl": "*",
+    "ext-apcu": "*",
     "erusev/parsedown": "^1.7",
     "league/html-to-markdown": "^5.0",
     "genert/bbcode": "^1.1"
