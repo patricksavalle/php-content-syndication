@@ -6,7 +6,7 @@ namespace ContentSyndication {
 
     class Mimetype
     {
-        public function __invoke(string $url): string
+        public function getMimetype(string $url): string
         {
             $curl = curl_init();
             try {
@@ -33,6 +33,21 @@ namespace ContentSyndication {
             } finally {
                 curl_close($curl);
             }
+        }
+
+        function __invoke(string $url): string
+        {
+            // Mangle function signature and try to get from cache
+            $cache_key = hash('md5', __METHOD__ . $url);
+            $result = apcu_fetch($cache_key);
+            if ($result === false) {
+                // if not, call the function and cache result
+                $result = $this->GetMimetype($url);
+                if (apcu_add($cache_key, $result, 60 * 60) === false) {
+                    error_log("APCu error on method: " . __METHOD__);
+                }
+            }
+            return $result;
         }
     }
 }
