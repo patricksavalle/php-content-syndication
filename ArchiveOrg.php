@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace ContentSyndication {
 
+    use Exception;
+
     class ArchiveOrg
     {
         /** @noinspection PhpUnusedParameterInspection */
@@ -23,29 +25,35 @@ namespace ContentSyndication {
             return ($result === 200) ? $url : false;
         }
 
+        /** @noinspection PhpMissingReturnTypeInspection */
         static public function closest(string $url)
         {
-            assert(filter_var($url, FILTER_VALIDATE_URL) !== false);
             $response = new HttpRequest("https://archive.org/wayback/available?url=$url");
             $json = json_decode($response->getContent());
             return $json->archived_snapshots->closest->url ?? false;
         }
 
-        static public function originalOrClosest(string $url)
+        static public function originalOrClosest(string $url): string
         {
+            /** @noinspection PhpForeachOverSingleElementArrayLiteralInspection */
             foreach ([
                          "https://t.me",
                      ] as $bypass) {
                 if (stripos($url, $bypass) === 0) return $url;
             }
-            $original = ArchiveOrg::original($url);
-            if ($original !== false) {
-                return $original;
+            try {
+                $original = ArchiveOrg::original($url);
+                if ($original !== false) {
+                    return $original;
+                }
+                $closest = ArchiveOrg::closest($url);
+                if ($closest !== false) {
+                    return $closest;
+                }
+            } catch( Exception $e) {
+                // ignore
             }
-            $closest = ArchiveOrg::closest($url);
-            if ($closest !== false) {
-                return $closest;
-            }
+            // last resort, just return origina;
             return $url;
         }
 
