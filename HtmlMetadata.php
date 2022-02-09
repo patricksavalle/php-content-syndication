@@ -92,6 +92,8 @@ namespace ContentSyndication {
                 $metadata['image'] = null;
             }
 
+            $metadata['embedurl'] = $jsonld['embedUrl'] ?? null;
+
             $metadata['video']
                 = $xvalue('//meta[@property="og:video"]/@content');
 
@@ -140,6 +142,7 @@ namespace ContentSyndication {
             if (isset($metadata['video'])) $metadata['video'] = (string)(new Url($metadata['video']))->absolutized($metadata['url']);
             if (isset($metadata['rss'])) $metadata['rss'] = (string)(new Url($metadata['rss']))->absolutized($metadata['url']);
             if (isset($metadata['atom'])) $metadata['atom'] = (string)(new Url($metadata['atom']))->absolutized($metadata['url']);
+            if (isset($metadata['embedurl'])) $metadata['embedurl'] = (string)(new Url($metadata['embedurl']))->absolutized($metadata['url']);
 
             // return keywords as unique array, minimum clean up
             $metadata['keywords'] = [];
