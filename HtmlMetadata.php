@@ -92,7 +92,7 @@ namespace ContentSyndication {
                 $metadata['image'] = null;
             }
 
-            $metadata['embedurl'] = $jsonld['embedUrl'] ?? null;
+            $metadata['embedurl'] = $jsonld['embedUrl'] ?? $jsonld[0]['embedUrl'] ?? null;
 
             $metadata['video']
                 = $xvalue('//meta[@property="og:video"]/@content');
