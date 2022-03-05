@@ -12,7 +12,7 @@ namespace ContentSyndication {
     {
         public function GetMetadata(string $url): array
         {
-            assert(filter_var($url, FILTER_VALIDATE_URL) !== false);
+            // assert(filter_var($url, FILTER_VALIDATE_URL) !== false);
             $response = new HttpRequest($url);
             if (stripos($response->getContentType(), "text/html") !== 0) {
                 throw new Exception("type must be text/html", 400);
