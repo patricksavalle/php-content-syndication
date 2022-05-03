@@ -70,10 +70,10 @@ namespace ContentSyndication {
             return $this;
         }
 
-        public function reEncode(string $encoding = "utf-8"): Text
+        public function reEncode(string $encoding = "UTF-8"): Text
         {
             $from_encoding = mb_detect_encoding($this->text);
-            if ($from_encoding === false or $from_encoding === "utf-8") return $this;
+            if ($from_encoding === false or $from_encoding === "UTF-8") return $this;
             $this->text = mb_convert_encoding($this->text, $encoding, $from_encoding);
             return $this;
         }
