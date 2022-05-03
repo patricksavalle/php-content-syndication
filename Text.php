@@ -75,7 +75,6 @@ namespace ContentSyndication {
             $from_encoding = mb_detect_encoding($this->text);
             if ($from_encoding === false) return $this;
             $this->text = mb_convert_encoding($this->text, $encoding, $from_encoding);
-            $this->text = mb_convert_encoding($this->text, 'html-entities', $encoding);
             return $this;
         }
 
