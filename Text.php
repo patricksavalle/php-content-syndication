@@ -23,7 +23,7 @@ namespace ContentSyndication {
 
         public function blurbify(int $blurbsize = 250): Text
         {
-            $this->text = substr($this->text, 0, $blurbsize);
+            $this->text = mb_substr($this->text, 0, $blurbsize);
             return $this;
         }
 
