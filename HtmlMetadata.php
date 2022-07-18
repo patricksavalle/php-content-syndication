@@ -37,9 +37,7 @@ namespace ContentSyndication {
             if ($result === false) {
                 // if not, call the function and cache result
                 $result = $this->GetMetadata($url);
-                if (apcu_add($cache_key, $result, 60 * 60) === false) {
-                    error_log("APCu error on method: " . __METHOD__);
-                }
+                apcu_add($cache_key, $result, 60 * 60);
             }
             return $result;
         }
