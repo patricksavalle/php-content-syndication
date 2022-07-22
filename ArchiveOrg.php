@@ -13,14 +13,17 @@ namespace ContentSyndication {
         {
             // HEAD request
             $ch = curl_init();
-            curl_setopt($ch, CURLOPT_URL, $url);
-            curl_setopt($ch, CURLOPT_TIMEOUT, 60);
-            curl_setopt($ch, CURLOPT_NOBODY, true); // set to HEAD request
-            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true); // don't output the response
-            curl_setopt($ch, CURLOPT_USERAGENT, "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/92.0.4515.159 Safari/537.36 OPR/78.0.4093.112"); // some feeds require a user agent
-            curl_exec($ch);
-            $result = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-            curl_close($ch);
+            try {
+                curl_setopt($ch, CURLOPT_URL, $url);
+                curl_setopt($ch, CURLOPT_TIMEOUT, 60);
+                curl_setopt($ch, CURLOPT_NOBODY, true); // set to HEAD request
+                curl_setopt($ch, CURLOPT_RETURNTRANSFER, true); // don't output the response
+                curl_setopt($ch, CURLOPT_USERAGENT, "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/92.0.4515.159 Safari/537.36 OPR/78.0.4093.112"); // some feeds require a user agent
+                curl_exec($ch);
+                $result = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+            } finally {
+                curl_close($ch);
+            }
             // do NOT trust redirects or moved to
             return ($result === 200) ? $url : false;
         }
@@ -50,7 +53,7 @@ namespace ContentSyndication {
                 if ($closest !== false) {
                     return $closest;
                 }
-            } catch( Exception $e) {
+            } catch (Exception $e) {
                 // ignore
             }
             // last resort, just return origina;
