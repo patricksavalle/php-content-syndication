@@ -13,7 +13,7 @@ namespace ContentSyndication {
 
     class XmlFeed
     {
-        protected $xml;
+        protected SimpleXMLElement $xml;
 
         public function __invoke(string $url): array
         {
@@ -82,7 +82,7 @@ namespace ContentSyndication {
             return $this->xml->{$name};
         }
 
-        public function toArray(SimpleXMLElement $xml = null)
+        public function toArray(SimpleXMLElement $xml = null): string|array
         {
             if ($xml === null) {
                 $xml = $this->xml;
@@ -110,7 +110,7 @@ namespace ContentSyndication {
             return new SimpleXMLElement($data, LIBXML_NOWARNING | LIBXML_NOERROR | LIBXML_NOCDATA);
         }
 
-        private static function adjustNamespaces(SimpleXMLElement $el)
+        private static function adjustNamespaces(SimpleXMLElement $el): void
         {
             foreach ($el->getNamespaces(true) as $prefix => $ns) {
                 $children = $el->children($ns);

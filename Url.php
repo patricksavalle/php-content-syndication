@@ -6,9 +6,9 @@ namespace ContentSyndication {
 
     class Url
     {
-        private $url;
+        private string $url;
 
-        static private $campaign_parameters = [
+        static private array $campaign_parameters = [
             "_openstat",
             "fbclid",
             "gclid",
@@ -164,7 +164,7 @@ namespace ContentSyndication {
 
             // Sort GET params alphabetically
             if (isset($url['query'])) {
-                if (preg_match("/&/", $url['query'])) {
+                if (str_contains($url['query'], "&")) {
                     $s = explode("&", $url['query']);
                     // remove the campaign arguments
                     foreach ($s as $i => $z) {
@@ -214,7 +214,7 @@ namespace ContentSyndication {
             assert(empty($user));
             assert(empty($pass));
 
-            if (strpos($this->url, "//") === 0) {
+            if (str_starts_with($this->url, "//")) {
                 // assume https:
                 $this->url = $scheme . ":" . $this->url;
                 return $this;
@@ -224,7 +224,7 @@ namespace ContentSyndication {
             // queries and anchors
             // ---------------------
 
-            if (strpos($this->url, '#') === 0 || strpos($this->url, '?') === 0) {
+            if (str_starts_with($this->url, '#') || str_starts_with($this->url, '?')) {
                 $this->url = $base . $this->url;
                 return $this;
             }

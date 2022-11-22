@@ -8,8 +8,7 @@ namespace ContentSyndication {
 
     class ArchiveOrg
     {
-        /** @noinspection PhpUnusedParameterInspection */
-        static public function original(string $url, bool $follow_redirects = false)
+        static public function original(string $url): string|bool
         {
             // HEAD request
             $ch = curl_init();
@@ -28,8 +27,7 @@ namespace ContentSyndication {
             return ($result === 200) ? $url : false;
         }
 
-        /** @noinspection PhpMissingReturnTypeInspection */
-        static public function closest(string $url)
+        static public function closest(string $url): string|bool
         {
             $response = new HttpRequest("https://archive.org/wayback/available?url=$url");
             $json = json_decode($response->getContent());
@@ -53,7 +51,7 @@ namespace ContentSyndication {
                 if ($closest !== false) {
                     return $closest;
                 }
-            } catch (Exception $e) {
+            } catch (Exception) {
                 // ignore
             }
             // last resort, just return origina;
@@ -74,11 +72,5 @@ namespace ContentSyndication {
                 : $url;
         }
 
-        static public function archiveAsync(string $url)
-        {
-            assert(filter_var($url, FILTER_VALIDATE_URL) !== false);
-            // store in webarchive.com and get newly archived url back
-            (new HttpFireAndForgetRequest)("https://web.archive.org/save/$url");
-        }
     }
 }

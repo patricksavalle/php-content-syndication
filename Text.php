@@ -9,7 +9,7 @@ namespace ContentSyndication {
 
     class Text
     {
-        protected $text;
+        protected string $text;
 
         public function __construct(string $text)
         {

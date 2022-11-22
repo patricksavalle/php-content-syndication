@@ -4,13 +4,14 @@ declare(strict_types=1);
 
 namespace ContentSyndication {
 
+    use CurlHandle;
     use Exception;
 
     class HttpRequest
     {
-        protected $curl;
-        protected $content;
-        protected $httpcode;
+        protected CurlHandle $curl;
+        protected mixed $content;
+        protected mixed $httpcode;
 
         public function __construct(string $url)
         {
@@ -60,7 +61,7 @@ namespace ContentSyndication {
 
         public function __destruct()
         {
-            if (is_resource($this->curl)) curl_close($this->curl);
+            @curl_close($this->curl);
         }
     }
 }
